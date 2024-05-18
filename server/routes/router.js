@@ -5,6 +5,7 @@ const pool = require('../database.js');
 let dotenv = require("dotenv");
 dotenv.config();
 
+
 const openai = new OpenAI({ apiKey: process.env.NODE_ENV_OPENAI_API_KEY});
 
 async function main(userInput) {

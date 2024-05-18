@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 function App() {
   const [textInput, setTextInput] = useState('')
   const [answerTest, setAnswerText] = useState('Heath answer...')
+  const [userLogs, setUserLogs] = useState()
   const [chatBox, setChatBox] = useState([
     { message: 'Hey! Welcome to Health AI Chat Bot. Feel free to ask any question down below.', user: false } 
   ])
@@ -24,9 +25,10 @@ function App() {
     }
   }, [])
 
+
   const axiosFetchData = async () => {
     await axios.get('http://localhost:4000/logs').then(res => {
-      console.log(res.data)
+      setUserLogs(res.data)
     }).catch(err => {
       Swal.fire({
         icon: "error",
@@ -37,27 +39,37 @@ function App() {
    
   }
 
-  console.log(chatBox)
   const axiosPostData = async() => {
     const postData = {
       text: textInput
     }
 
-    let myObject = { message: textInput, user: true };
-    setChatBox(chatBox => [...chatBox, myObject])
-
-    await axios.post('http://localhost:4000/message', postData)
-    .then(res => {
-      setAnswerText(res.data[0].response);
-      let myObject = { message: res.data[0].response, user: false };
+    if ( textInput !== '') {
+      let myObject = { message: textInput, user: true };
       setChatBox(chatBox => [...chatBox, myObject])
-    }).catch(err => {
+
+      await axios.post('http://localhost:4000/message', postData)
+      .then(res => {
+        setAnswerText(res.data[0].response);
+        let myObject = { message: res.data[0].response, user: false };
+        setChatBox(chatBox => [...chatBox, myObject])
+
+      }).catch(err => {
+        Swal.fire({
+          icon: "error",
+          title: "",
+          text: "Sorry, something went wrong. Please try again later.",
+          confirmButtonColor: '#1976d2'
+        });
+      })
+    } else {
       Swal.fire({
         icon: "error",
+        confirmButtonColor: '#1976d2',
         title: "",
-        text: "Sorry, something went wrong. Please try again later."
+        text: "Please don't leave the input box empty"
       });
-    })
+    }
   }
 
   function handleChange(value) {
@@ -69,17 +81,16 @@ function App() {
     setAnswerText('')
     axiosPostData()
   }
-
   
   return (
     <div className="App">
       <div className="page-container">
   
         <div className="chat-window">
-          {chatBox.map(function (chat) {
+          {chatBox?.map(function (chat) {
             return (
-              <div className={chat.user ? 'chat-message chat-user' : 'chat-message chat-bot'}>
-                <p className="chat-text">{chat.message}</p>
+              <div className={chat?.user ? 'chat-message chat-user' : 'chat-message chat-bot'}>
+                <p className="chat-text">{chat?.message}</p>
               </div>
             )
           })}
