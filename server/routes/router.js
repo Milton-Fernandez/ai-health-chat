@@ -39,25 +39,24 @@ router.post('/message', async (req,res) => {
     // The following is the code for handling the open ai key only if you have a paid subscription, 
     // I do not so I replace it with a hard coded text. 
      
-    const openAiResponse = await chatBotResponse(text);
-    await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', '${openAiResponse} ') RETURNING response`, )
-        .then((result) => {
-            res.send(result.rows);
-        }).catch((error) => {
-            console.log('Error creating new log:', error);
-        });
-
-
-
-    // await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', 'For headaches apply hot or cold 
-    // compresses to your head or neck. Massage and small amounts of caffeine. Over-the-counter medications such as 
-    // ibuprofen (Advil, Motrin IB, others), acetaminophen (Tylenol, others) and aspirin. 
-    // ') RETURNING response`, )
+    // const openAiResponse = await chatBotResponse(text);
+    // await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', '${openAiResponse} ') RETURNING response`, )
     //     .then((result) => {
     //         res.send(result.rows);
     //     }).catch((error) => {
     //         console.log('Error creating new log:', error);
     //     });
+
+
+    await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', 'For headaches apply hot or cold 
+    compresses to your head or neck. Massage and small amounts of caffeine. Over-the-counter medications such as 
+    ibuprofen (Advil, Motrin IB, others), acetaminophen (Tylenol, others) and aspirin. 
+    ') RETURNING response`, )
+        .then((result) => {
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log('Error creating new log:', error);
+        });
 })
 
 module.exports = router

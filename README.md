@@ -13,7 +13,7 @@ Open Ai Health Chat
     First make sure that you have access or downloaded the prerequisites before setting up.
 
     First download the repository from github. Create an .env file. Then follow the env.example
-    and input your own server requirments and Open API key. After your set up your env file, 
+    and input your own server requirments and put your api key in database. After your set up your env file, 
     open two terminals so you can run the server folder and the main app folder. Once you have two
     run npm start. Once you have both the front end and back end running, you can open the web browser
     and go to localhost. There you will find the interface for the app. 
