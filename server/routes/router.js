@@ -34,9 +34,9 @@ router.get('/logs', async (req,res) => {
 
 router.post('/message', async (req,res) => {
     const {text} = req.body  
-    const openAiResponse = await main(text);
+    // const openAiResponse = await main(text);
 
-    await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', '${openAiResponse}') RETURNING response`, )
+    await pool.query(`INSERT INTO logs(user_input, response) VALUES('${text}', 'this is a test') RETURNING response`, )
         .then((result) => {
             res.send(result.rows);
         }).catch((error) => {
